@@ -40,7 +40,7 @@ class SASKC(BaseEstimator, ClassifierMixin):
     
     feature_weights_ : ndarray of shape (n_features,)
         Weights assigned to each feature based on variance.
-        w_f = 1 / (1 + sigma_f^2 + epsilon)
+        Formula: w_f = 1 / (1 + sigma_f^2 + epsilon)
     """
 
     def __init__(self, 
@@ -147,7 +147,8 @@ class SASKC(BaseEstimator, ClassifierMixin):
         distances = cdist(X, self.X_, metric='seuclidean', V=V)
         
         # 2. Statistical Kernel Transformation
-        # K(x, y) = 1 / (1 + d_W(x, y))
+        # Formula: K(x_q, x_i) = 1 / (1 + sqrt(d^2))
+        # Here, 'distances' is the weighted Euclidean distance d.
         kernel_matrix = 1.0 / (1.0 + distances)
         
         # 3. Neighbor Retrieval (Top-k)
@@ -176,7 +177,7 @@ class SASKC(BaseEstimator, ClassifierMixin):
         final_labels = self.y_[final_indices]
         
         # 4. Rank-Based Voting
-        # Vote = Kernel_Similarity * Rank_Decay
+        # Formula: Vote_j = K(x_q, x_j) * (1 / j)
         if self.use_rank_voting:
             ranks = np.arange(1, k + 1) # [1, 2, ..., k]
             rank_weights = 1.0 / ranks  # [1, 0.5, 0.33, ...]

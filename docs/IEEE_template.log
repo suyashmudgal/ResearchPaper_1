@@ -300,8 +300,12 @@ Package: multirow 2024/11/12 v2.9 Span multiple rows of a table
 \multirow@dima=\skip57
 \bigstrutjot=\dimen188
 )
-(C:\Users\suyas\AppData\Local\Programs\MiKTeX\tex/latex/caption\subcaption.sty
-Package: subcaption 2023/07/28 v1.6b Sub-captions (AR)
+! Interruption.
+<argument> \__file_size:n {subcaption.sty}
+                                          
+l.14 
+     
+? Sub-captions (AR)
 
 (C:\Users\suyas\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption.sty
 Package: caption 2023/08/05 v3.6o Customizing captions (AR)
