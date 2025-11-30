@@ -8,7 +8,6 @@
 \newlabel{sec:introduction}{{I}{1}{}{}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {I-A}}The Small-Sample High-Dimensional Challenge}{1}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {I-B}}The Geometry of Small Samples}{1}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {I-C}}Limitations of Existing Approaches}{1}{}\protected@file@percent }
 \citation{vapnik1999overview}
 \citation{scikit-learn}
 \citation{cover1967nearest}
@@ -17,7 +16,9 @@
 \citation{weinberger2009distance}
 \citation{goldberger2004neighbourhood}
 \citation{hastie2009elements}
-\citation{snell2017prototypical}
+\citation{tenenbaum2000global}
+\citation{roweis2000nonlinear}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {I-C}}Limitations of Existing Approaches}{2}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {I-D}}Proposed Solution: SASKC}{2}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {I-E}}Contributions}{2}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {II}Related Work}{2}{}\protected@file@percent }
@@ -25,90 +26,87 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-A}}Instance-Based Learning and KNN Variants}{2}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-B}}Kernel Methods and SVMs}{2}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-C}}Feature Weighting and Metric Learning}{2}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-D}}Few-Shot Learning Context}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-D}}Manifold Learning and Its Limits}{2}{}\protected@file@percent }
+\citation{snell2017prototypical}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-E}}Few-Shot Learning Context}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {III}Methodology: Theoretical Foundation}{3}{}\protected@file@percent }
 \newlabel{sec:methodology}{{III}{3}{}{}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-A}}The Mahalanobis Connection}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-B}}Variance-Based Weighting}{3}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-C}}Riemannian Metric Interpretation}{3}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Conceptual Illustration of Feature Variance Weighting. The algorithm automatically identifies high-variance ``noise'' dimensions (red) and assigns them low weights, while low-variance ``signal'' dimensions (green) are preserved.}}{3}{}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
 \newlabel{fig:variance}{{1}{3}{}{}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {IV}Proposed Algorithm: SASKC}{3}{}\protected@file@percent }
-\newlabel{sec:algorithm}{{IV}{3}{}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}The Statistical Kernel}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-C}}Riemannian Metric Interpretation}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {IV}Proposed Algorithm: SASKC}{4}{}\protected@file@percent }
+\newlabel{sec:algorithm}{{IV}{4}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}The Statistical Kernel}{4}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Rank-Based Voting Mechanism}{4}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Rank-Based Voting Mechanism. The decision boundary is refined by weighting neighbors not just by their spatial proximity, but also by their ordinal rank. This prevents distant outliers from outvoting the closest, most relevant samples.}}{4}{}\protected@file@percent }
 \newlabel{fig:voting}{{2}{4}{}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Algorithm Pseudocode}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}Complexity Analysis}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-D}1}Time Complexity}{4}{}\protected@file@percent }
-\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces SASKC Training and Prediction}}{4}{}\protected@file@percent }
-\newlabel{alg:saskc}{{1}{4}{}{}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-D}2}Space Complexity}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {V}System Architecture}{4}{}\protected@file@percent }
-\newlabel{sec:architecture}{{V}{4}{}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Stage 1: Data Ingestion and Profiling}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Stage 2: Preprocessing and Standardization}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}The Role of Smoothing Parameter $\epsilon $}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}Algorithm Pseudocode}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}Complexity Analysis}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-E}1}Time Complexity Analysis}{5}{}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces SASKC Training and Prediction}}{5}{}\protected@file@percent }
+\newlabel{alg:saskc}{{1}{5}{}{}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-E}2}Space Complexity}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {V}System Architecture}{5}{}\protected@file@percent }
+\newlabel{sec:architecture}{{V}{5}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Stage 1: Data Ingestion and Profiling}{5}{}\protected@file@percent }
 \citation{uci}
 \citation{scikit-learn}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}Stage 3: The SASKC Core Engine}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-D}}Stage 4: Inference and Voting}{5}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces SASKC System Architecture. The pipeline ensures that statistical properties learned during training are consistently applied during inference, maintaining the integrity of the adaptive kernel.}}{5}{}\protected@file@percent }
-\newlabel{fig:architecture}{{3}{5}{}{}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VI}Experimental Setup}{5}{}\protected@file@percent }
-\newlabel{sec:experiments}{{VI}{5}{}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Datasets}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Dataset Characterization: UCI Wine}{5}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces PCA Projection of the Wine Dataset. The first two principal components explain only a fraction of the variance, indicating that the discriminative information is spread across higher dimensions---precisely where SASKC's feature weighting excels.}}{5}{}\protected@file@percent }
-\newlabel{fig:pca}{{4}{5}{}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-C}}Baseline Classifiers and Hyperparameters}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-D}}Noise Injection Protocol}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-E}}Evaluation Methodology}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Results and Discussion}{6}{}\protected@file@percent }
-\newlabel{sec:results}{{VII}{6}{}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-A}}Quantitative Performance Analysis}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VII-A}1}Comparison with Instance-Based Methods}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VII-A}2}Comparison with Tree-Based Methods}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-B}}Ablation Study}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-C}}Visual Analysis}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VII-C}1}Confusion Matrix}{6}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Confusion Matrix for SASKC on Wine Dataset. The model achieves near-perfect classification on Class 0 and Class 2, with minor confusion in Class 1.}}{6}{}\protected@file@percent }
-\newlabel{fig:cm}{{5}{6}{}{}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VII-C}2}Adaptive Feature Weights}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-D}}Stability Analysis}{6}{}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Comprehensive Model Performance Comparison (Mean $\pm $ Std Dev over 100 Runs)}}{7}{}\protected@file@percent }
-\newlabel{tab:results}{{I}{7}{}{}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Ablation Study: Impact of SASKC Components (Mean $\pm $ Std Dev)}}{7}{}\protected@file@percent }
-\newlabel{tab:ablation}{{II}{7}{}{}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Adaptive Feature Weights. SASKC automatically learns to prioritize stable features over noisy ones.}}{7}{}\protected@file@percent }
-\newlabel{fig:weights}{{6}{7}{}{}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces F1-Score Stability Analysis. SASKC shows consistent performance across 100 random splits, highlighting its reliability. Note the large variance in Decision Tree performance, which SASKC successfully avoids.}}{7}{}\protected@file@percent }
-\newlabel{fig:stability}{{7}{7}{}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-E}}Noise Robustness and Kernel Behavior}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Stage 2: Preprocessing and Standardization}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}Stage 3: The SASKC Core Engine}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-D}}Stage 4: Inference and Voting}{6}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces SASKC System Architecture. The pipeline ensures that statistical properties learned during training are consistently applied during inference, maintaining the integrity of the adaptive kernel.}}{6}{}\protected@file@percent }
+\newlabel{fig:architecture}{{3}{6}{}{}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Experimental Setup}{6}{}\protected@file@percent }
+\newlabel{sec:experiments}{{VI}{6}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Datasets}{6}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Characteristics of Benchmark Datasets}}{6}{}\protected@file@percent }
+\newlabel{tab:datasets}{{I}{6}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Dataset Characterization: UCI Wine}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-C}}Baseline Classifiers and Hyperparameters}{6}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces PCA Projection of the Wine Dataset. The first two principal components explain only a fraction of the variance, indicating that the discriminative information is spread across higher dimensions---precisely where SASKC's feature weighting excels.}}{7}{}\protected@file@percent }
+\newlabel{fig:pca}{{4}{7}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-D}}Noise Injection Protocol}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-E}}Evaluation Methodology}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Results and Discussion}{7}{}\protected@file@percent }
+\newlabel{sec:results}{{VII}{7}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-A}}Quantitative Performance Analysis}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VII-A}1}Comparison with Instance-Based Methods}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VII-A}2}Comparison with Tree-Based Methods}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VII-A}3}Stability vs. Complexity Trade-off}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-B}}Ablation Study}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-C}}Visual Analysis}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VII-C}1}Confusion Matrix Analysis}{7}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Comprehensive Model Performance Comparison (Mean $\pm $ Std Dev over 100 Runs)}}{8}{}\protected@file@percent }
+\newlabel{tab:results}{{II}{8}{}{}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces Ablation Study: Impact of SASKC Components (Mean $\pm $ Std Dev)}}{8}{}\protected@file@percent }
+\newlabel{tab:ablation}{{III}{8}{}{}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VII-C}2}Adaptive Feature Weights Interpretation}{8}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-D}}Stability Analysis}{8}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Confusion Matrix for SASKC on Wine Dataset. The model achieves near-perfect classification on Class 0 and Class 2, with minor confusion in Class 1. The diagonal dominance illustrates the robustness of the learned manifold.}}{9}{}\protected@file@percent }
+\newlabel{fig:cm}{{5}{9}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Adaptive Feature Weights learned by SASKC. The algorithm automatically prioritizes stable features (weights $\to $ 1) over noisy ones (weights $\to $ 0), effectively performing soft dimensionality reduction.}}{9}{}\protected@file@percent }
+\newlabel{fig:weights}{{6}{9}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces F1-Score Stability Analysis. SASKC shows consistent performance across 100 random splits, highlighting its reliability. Note the large variance in Decision Tree performance, which SASKC successfully avoids.}}{9}{}\protected@file@percent }
+\newlabel{fig:stability}{{7}{9}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-E}}Noise Robustness and Kernel Behavior}{9}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Noise Robustness Analysis. SASKC maintains high accuracy even when features are corrupted by Gaussian noise, demonstrating the efficacy of the statistical kernel. Standard distance metrics (KNN) degrade linearly with noise intensity.}}{9}{}\protected@file@percent }
+\newlabel{fig:noise}{{8}{9}{}{}{}}
 \bibcite{bishop2006pattern}{1}
 \bibcite{hastie2009elements}{2}
 \bibcite{cover1967nearest}{3}
 \bibcite{vapnik1999overview}{4}
 \bibcite{scikit-learn}{5}
 \bibcite{uci}{6}
-\bibcite{bach2004multiple}{7}
-\bibcite{weinberger2009distance}{8}
-\bibcite{goldberger2004neighbourhood}{9}
-\bibcite{wang2014generalized}{10}
-\bibcite{duda2012pattern}{11}
-\bibcite{fukunaga2013introduction}{12}
-\bibcite{belkin2006manifold}{13}
-\bibcite{tenenbaum2000global}{14}
-\bibcite{roweis2000nonlinear}{15}
-\bibcite{snell2017prototypical}{16}
-\bibcite{friedman1997bias}{17}
-\bibcite{domingos2012few}{18}
-\bibcite{stone1974cross}{19}
-\bibcite{kohavi1995study}{20}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Noise Robustness. SASKC maintains high accuracy even when features are corrupted, demonstrating the efficacy of the statistical kernel. Standard distance metrics degrade rapidly under noise.}}{8}{}\protected@file@percent }
-\newlabel{fig:noise}{{8}{8}{}{}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VIII}Conclusion and Future Work}{8}{}\protected@file@percent }
-\newlabel{sec:conclusion}{{VIII}{8}{}{}{}}
-\@writefile{toc}{\contentsline {section}{References}{8}{}\protected@file@percent }
-\gdef \@abspage@last{8}
+\bibcite{weinberger2009distance}{7}
+\bibcite{goldberger2004neighbourhood}{8}
+\bibcite{tenenbaum2000global}{9}
+\bibcite{roweis2000nonlinear}{10}
+\bibcite{snell2017prototypical}{11}
+\@writefile{toc}{\contentsline {section}{\numberline {VIII}Conclusion and Future Work}{10}{}\protected@file@percent }
+\newlabel{sec:conclusion}{{VIII}{10}{}{}{}}
+\@writefile{toc}{\contentsline {section}{References}{10}{}\protected@file@percent }
+\gdef \@abspage@last{10}

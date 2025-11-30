@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.30)  1 DEC 2025 00:11
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.30)  1 DEC 2025 00:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -412,79 +412,106 @@ yas/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}
 
 
 ]
-Underfull \hbox (badness 3291) in paragraph at lines 104--105
+
+LaTeX Warning: Citation `bach2004multiple' on page 2 undefined on input line 91
+.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 99--100
+[]\OT1/ptm/m/n/10 Non-linear di-men-sion-al-ity re-duc-tion tech-niques like
+ []
+
+
+Underfull \hbox (badness 1354) in paragraph at lines 99--100
+\OT1/ptm/m/n/10 dis-tances or lo-cal lin-ear patches. In the "small-sample"
+ []
+
+
+Underfull \hbox (badness 3148) in paragraph at lines 99--100
+\OT1/ptm/m/n/10 topo-log-i-cal struc-ture, of-ten lead-ing to "short-circuiting
+"
+ []
+
+
+Underfull \hbox (badness 1571) in paragraph at lines 99--100
+\OT1/ptm/m/n/10 avoids this pit-fall by not at-tempt-ing to re-con-struct the
+ []
+
+[2]
+Underfull \hbox (badness 3291) in paragraph at lines 107--108
 []\OT1/ptm/m/n/10 The Su-per-vised Adap-tive Sta-tis-ti-cal Ker-nel Clas-si-fie
 r
  []
 
-[2]
 <diagram/saskc_variance.png, id=20, 246.6816pt x 246.6816pt>
 File: diagram/saskc_variance.png Graphic file (type png)
 <use diagram/saskc_variance.png>
-Package pdftex.def Info: diagram/saskc_variance.png  used on input line 126.
+Package pdftex.def Info: diagram/saskc_variance.png  used on input line 129.
 (pdftex.def)             Requested size: 226.79846pt x 226.80678pt.
- [3 <./diagram/saskc_variance.png>]
+[3 <./diagram/saskc_variance.png>]
+Underfull \hbox (badness 4001) in paragraph at lines 161--164
+\OT1/ptm/b/n/10 Kernel Prop-er-ties and Proofs\OT1/ptm/m/n/10 : The pro-posed k
+er-nel
+ []
+
 <diagram/saskc_voting.png, id=25, 246.6816pt x 246.6816pt>
 File: diagram/saskc_voting.png Graphic file (type png)
 <use diagram/saskc_voting.png>
-Package pdftex.def Info: diagram/saskc_voting.png  used on input line 163.
+Package pdftex.def Info: diagram/saskc_voting.png  used on input line 198.
 (pdftex.def)             Requested size: 226.79846pt x 226.80678pt.
- [4 <./diagram/saskc_voting.png>]
-<diagram/saskc_architecture.png, id=32, 246.6816pt x 246.6816pt>
+[4 <./diagram/saskc_voting.png>] [5]
+<diagram/saskc_architecture.png, id=35, 246.6816pt x 246.6816pt>
 File: diagram/saskc_architecture.png Graphic file (type png)
 <use diagram/saskc_architecture.png>
-Package pdftex.def Info: diagram/saskc_architecture.png  used on input line 237
+Package pdftex.def Info: diagram/saskc_architecture.png  used on input line 301
 .
 (pdftex.def)             Requested size: 226.79846pt x 226.80678pt.
-<diagram/dataset_pca.png, id=33, 722.7pt x 578.16pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 330--331
+[]\OT1/ptm/b/n/10 Wine\OT1/ptm/m/n/10 : Rep-re-sents a clas-sic small-sample, h
+igh-
+ []
+
+<diagram/dataset_pca.png, id=36, 722.7pt x 578.16pt>
 File: diagram/dataset_pca.png Graphic file (type png)
 <use diagram/dataset_pca.png>
-Package pdftex.def Info: diagram/dataset_pca.png  used on input line 262.
+Package pdftex.def Info: diagram/dataset_pca.png  used on input line 344.
 (pdftex.def)             Requested size: 226.79846pt x 181.43324pt.
-
-[5 <./diagram/saskc_architecture.png> <./diagram/dataset_pca.png>]
-Underfull \hbox (badness 1460) in paragraph at lines 333--334
+[6 <./diagram/saskc_architecture.png>]
+Underfull \hbox (badness 1460) in paragraph at lines 416--417
  \OT1/ptm/m/it/10 1) Com-par-i-son with Instance-Based Meth-ods: [][] \OT1/ptm/
 m/n/10 SASKC
  []
 
-<../results/plots/confusion_matrix_Wine.png, id=39, 433.62pt x 433.62pt>
+[7 <./diagram/dataset_pca.png>]
+<../results/plots/confusion_matrix_Wine.png, id=46, 433.62pt x 433.62pt>
 File: ../results/plots/confusion_matrix_Wine.png Graphic file (type png)
 <use ../results/plots/confusion_matrix_Wine.png>
 Package pdftex.def Info: ../results/plots/confusion_matrix_Wine.png  used on in
-put line 377.
+put line 470.
 (pdftex.def)             Requested size: 226.79846pt x 226.80038pt.
-
-Underfull \hbox (badness 1565) in paragraph at lines 383--384
- \OT1/ptm/m/it/10 2) Adap-tive Fea-ture Weights: [][] \OT1/ptm/m/n/10 Fig-ure 6
-[] vi-su-al-izes the
- []
-
-<../results/plots/feature_weights_Wine.png, id=40, 722.7pt x 433.62pt>
+<../results/plots/feature_weights_Wine.png, id=47, 722.7pt x 433.62pt>
 File: ../results/plots/feature_weights_Wine.png Graphic file (type png)
 <use ../results/plots/feature_weights_Wine.png>
 Package pdftex.def Info: ../results/plots/feature_weights_Wine.png  used on inp
-ut line 386.
+ut line 484.
 (pdftex.def)             Requested size: 226.79846pt x 136.07494pt.
-[6 <../results/plots/confusion_matrix_Wine.png>]
-<diagram/stability_f1_boxplot.png, id=45, 867.24pt x 433.62pt>
+ [8]
+<diagram/stability_f1_boxplot.png, id=52, 867.24pt x 433.62pt>
 File: diagram/stability_f1_boxplot.png Graphic file (type png)
 <use diagram/stability_f1_boxplot.png>
-Package pdftex.def Info: diagram/stability_f1_boxplot.png  used on input line 3
-99.
+Package pdftex.def Info: diagram/stability_f1_boxplot.png  used on input line 4
+98.
 (pdftex.def)             Requested size: 226.79846pt x 113.39357pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [7 <../results/plots/feature_weights_Wine.png> <./diagram/stability_f1_boxplot
-.png>]
-<diagram/noise_robustness.png, id=55, 867.24pt x 433.62pt>
+<diagram/noise_robustness.png, id=53, 867.24pt x 433.62pt>
 File: diagram/noise_robustness.png Graphic file (type png)
 <use diagram/noise_robustness.png>
-Package pdftex.def Info: diagram/noise_robustness.png  used on input line 410.
+Package pdftex.def Info: diagram/noise_robustness.png  used on input line 514.
 (pdftex.def)             Requested size: 226.79846pt x 113.39357pt.
-
-Underfull \hbox (badness 1867) in paragraph at lines 422--423
+ [9 <../results/plots/confusion_matrix_Wine.png> <../results/plots/feature_weig
+hts_Wine.png> <./diagram/stability_f1_boxplot.png> <./diagram/noise_robustness.
+png>]
+Underfull \hbox (badness 1867) in paragraph at lines 526--527
 []\OT1/ptm/b/n/10 Competitive Ac-cu-racy\OT1/ptm/m/n/10 : 96.1% on the UCI Wine
 
  []
@@ -500,44 +527,49 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[8 <./diagram/noise_robustness.png>] (IEEE_template.aux)
+[10] (IEEE_template.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
+
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
  ) 
 Here is how much of TeX's memory you used:
- 6147 strings out of 474486
- 104282 string characters out of 5743754
- 1953542 words of memory out of 5000000
- 28365 multiletter control sequences out of 15000+600000
- 598208 words of font info for 114 fonts, out of 8000000 for 9000
+ 6126 strings out of 474486
+ 103985 string characters out of 5743754
+ 1954542 words of memory out of 5000000
+ 28348 multiletter control sequences out of 15000+600000
+ 596636 words of font info for 108 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 67i,11n,77p,835b,512s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 67i,11n,77p,1077b,512s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/suyas/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
 cmex10.pfb><C:/Users/suyas/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
 fonts/cm/cmmi10.pfb><C:/Users/suyas/AppData/Local/Programs/MiKTeX/fonts/type1/p
 ublic/amsfonts/cm/cmmi5.pfb><C:/Users/suyas/AppData/Local/Programs/MiKTeX/fonts
 /type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/suyas/AppData/Local/Programs/MiKT
-eX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/suyas/AppData/Local/Progr
-ams/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Users/suyas/AppData/Loc
-al/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/suyas/App
-Data/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/su
-yas/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/U
-sers/suyas/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pf
-b><C:/Users/suyas/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
-cmr9.pfb><C:/Users/suyas/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfo
-nts/cm/cmsy10.pfb><C:/Users/suyas/AppData/Local/Programs/MiKTeX/fonts/type1/pub
-lic/amsfonts/cm/cmsy7.pfb><C:/Users/suyas/AppData/Local/Programs/MiKTeX/fonts/t
-ype1/public/amsfonts/cm/cmsy8.pfb><C:/Users/suyas/AppData/Local/Programs/MiKTeX
-/fonts/type1/public/amsfonts/symbols/msbm10.pfb><C:/Users/suyas/AppData/Local/P
-rograms/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/suyas/AppData/Local/P
-rograms/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/suyas/AppData/Local/
-Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/suyas/AppData/Local/
-Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on IEEE_template.pdf (8 pages, 2080254 bytes).
+eX/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Users/suyas/AppData/Local/Progr
+ams/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/suyas/AppData/Loc
+al/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/suyas/AppD
+ata/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/suy
+as/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Us
+ers/suyas/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.p
+fb><C:/Users/suyas/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm
+/cmsy7.pfb><C:/Users/suyas/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
+fonts/cm/cmsy9.pfb><C:/Users/suyas/AppData/Local/Programs/MiKTeX/fonts/type1/pu
+blic/amsfonts/symbols/msbm10.pfb><C:/Users/suyas/AppData/Local/Programs/MiKTeX/
+fonts/type1/urw/times/utmb8a.pfb><C:/Users/suyas/AppData/Local/Programs/MiKTeX/
+fonts/type1/urw/times/utmbi8a.pfb><C:/Users/suyas/AppData/Local/Programs/MiKTeX
+/fonts/type1/urw/times/utmr8a.pfb><C:/Users/suyas/AppData/Local/Programs/MiKTeX
+/fonts/type1/urw/times/utmri8a.pfb>
+Output written on IEEE_template.pdf (10 pages, 2076562 bytes).
 PDF statistics:
- 139 PDF objects out of 1000 (max. 8388607)
+ 135 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  41 words of extra memory for PDF output out of 10000 (max. 10000000)
 
