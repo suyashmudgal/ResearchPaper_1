@@ -1,4 +1,6 @@
 import os
+import sys              # NEW
+import subprocess       # NEW
 import pandas as pd
 import numpy as np
 import plotly.express as px
@@ -8,9 +10,10 @@ import streamlit as st
 # ---------- PATHS ----------
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(CURRENT_DIR)
-DATA_DIR = os.path.join(PROJECT_ROOT, "data")
+RESULTS_DIR = os.path.join(PROJECT_ROOT, "results", "tables")
 
-RUNS_PATH = os.path.join(DATA_DIR, "results_runs.csv")
+RUNS_PATH = os.path.join(RESULTS_DIR, "results_runs.csv")
+EXPERIMENT_SCRIPT = os.path.join(PROJECT_ROOT, "src", "experiment_runs.py")  # NEW
 
 st.set_page_config(page_title="SASKC Research Dashboard", layout="wide", page_icon="📊")
 
@@ -30,15 +33,31 @@ st.markdown("Interactive analysis of model stability, accuracy, and trade-offs a
 # ---------- LOAD DATA ----------
 @st.cache_data
 def load_data():
+    # If data file is missing, try to generate it by running the experiment script
+    if not os.path.exists(RUNS_PATH):
+        if os.path.exists(EXPERIMENT_SCRIPT):
+            try:
+                # Run `python src/experiment_runs.py` from the project root
+                subprocess.run(
+                    [sys.executable, "src/experiment_runs.py"],
+                    cwd=PROJECT_ROOT,
+                    check=True
+                )
+            except Exception:
+                # If something goes wrong, we will just return None
+                pass
+
+    # Try again to read the CSV (after attempting generation)
     if not os.path.exists(RUNS_PATH):
         return None
+
     df = pd.read_csv(RUNS_PATH)
     return df
 
 df_runs = load_data()
 
 if df_runs is None:
-    st.error("Data not found. Run `python src/experiment_runs.py` first.")
+    st.error("Data not found and could not be generated. Please check `src/experiment_runs.py`.")
     st.stop()
 
 # ---------- SIDEBAR ----------
@@ -207,12 +226,12 @@ with col2:
 
 # 4. Convergence Check (Research Quality)
 st.markdown("---")
-st.markdown(f"### � Experiment Convergence ({primary_metric.capitalize()})")
+st.markdown(f"### 🔁 Experiment Convergence ({primary_metric.capitalize()})")
 st.markdown("Verifying that the mean score stabilizes as more runs are added (Monte Carlo convergence).")
 st.plotly_chart(plot_convergence(df_viz, primary_metric), use_container_width=True)
 
 # 5. Raw Data Table
-with st.expander("� View Raw Summary Statistics"):
+with st.expander("📄 View Raw Summary Statistics"):
     summary_stats = df_viz.groupby("model")[primary_metric].agg(["mean", "std", "min", "max"]).sort_values("mean", ascending=False)
     st.dataframe(summary_stats.style.format("{:.4f}").background_gradient(cmap="Blues", subset=["mean"]), use_container_width=True)
 

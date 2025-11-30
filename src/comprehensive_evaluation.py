@@ -142,7 +142,8 @@ def plot_confusion_matrix(model, X, y, dataset_name, target_names):
     disp.plot(cmap='Blues', ax=ax, colorbar=False)
     plt.title(f'Confusion Matrix: SASKC on {dataset_name}')
     plt.tight_layout()
-    plt.savefig(f'confusion_matrix_{dataset_name}.png')
+    os.makedirs('results/plots', exist_ok=True)
+    plt.savefig(f'results/plots/confusion_matrix_{dataset_name}.png')
     plt.close()
 
 def plot_feature_weights(model, feature_names, dataset_name):
@@ -155,7 +156,8 @@ def plot_feature_weights(model, feature_names, dataset_name):
     plt.title(f'Adaptive Feature Weights: {dataset_name}')
     plt.ylabel('Weight (1 / (1 + Variance))')
     plt.tight_layout()
-    plt.savefig(f'feature_weights_{dataset_name}.png')
+    os.makedirs('results/plots', exist_ok=True)
+    plt.savefig(f'results/plots/feature_weights_{dataset_name}.png')
     plt.close()
 
 def main():
@@ -209,12 +211,14 @@ def main():
             plt.ylabel('Accuracy')
             plt.title('SASKC Noise Robustness (Wine Dataset)')
             plt.grid(True)
-            plt.savefig('noise_robustness.png')
+            os.makedirs('results/plots', exist_ok=True)
+            plt.savefig('results/plots/noise_robustness.png')
             plt.close()
 
     # Save Results
+    os.makedirs('results/tables', exist_ok=True)
     df_results = pd.DataFrame(all_results)
-    df_results.to_csv('evaluation_results.csv', index=False)
+    df_results.to_csv('results/tables/evaluation_results.csv', index=False)
     
     # Format Ablation Table
     ablation_rows = []
@@ -225,7 +229,7 @@ def main():
                 row[k] = f"{v[0]:.3f} ± {v[1]:.3f}"
             ablation_rows.append(row)
     df_ablation = pd.DataFrame(ablation_rows)
-    df_ablation.to_csv('ablation_results.csv', index=False)
+    df_ablation.to_csv('results/tables/ablation_results.csv', index=False)
     
     print("\nEvaluation Complete.")
     print("\n--- Model Results ---")

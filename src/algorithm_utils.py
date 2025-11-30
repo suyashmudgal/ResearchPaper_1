@@ -7,9 +7,9 @@ from typing import Tuple, List, Optional
 
 # Directory setup
 # This file is in src/algorithm_utils.py
-# We want data/ in the project root (one level up from src)
+# We want results/tables in the project root
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_DIR = os.path.join(BASE_DIR, "data")
+RESULTS_DIR = os.path.join(BASE_DIR, "results", "tables")
 
 def load_wine_data(add_noise: bool = False, noise_level: float = 0.05) -> Tuple[np.ndarray, np.ndarray, List[str], np.ndarray]:
     """
@@ -62,13 +62,13 @@ def save_runs_and_summary(df: pd.DataFrame, filename_suffix: str = "") -> Tuple[
     summary : DataFrame
         Aggregated summary by model.
     """
-    os.makedirs(DATA_DIR, exist_ok=True)
+    os.makedirs(RESULTS_DIR, exist_ok=True)
     
     runs_filename = f"results_runs{filename_suffix}.csv"
     summary_filename = f"results_summary{filename_suffix}.csv"
     
-    runs_path = os.path.join(DATA_DIR, runs_filename)
-    summary_path = os.path.join(DATA_DIR, summary_filename)
+    runs_path = os.path.join(RESULTS_DIR, runs_filename)
+    summary_path = os.path.join(RESULTS_DIR, summary_filename)
     
     # Save detailed runs
     # If file exists, we might want to append or overwrite. 
