@@ -1,17 +1,20 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
+import warnings
+from tqdm import tqdm
 from sklearn.datasets import load_wine, load_iris, load_breast_cancer
-from sklearn.model_selection import train_test_split, StratifiedShuffleSplit
+from sklearn.model_selection import StratifiedShuffleSplit, train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, ConfusionMatrixDisplay
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.naive_bayes import GaussianNB
 from src.saskc import SASKC
-import os
-import warnings
 
 # Suppress warnings for cleaner output
 warnings.filterwarnings("ignore")
@@ -40,35 +43,57 @@ def load_datasets():
 
 def get_baselines():
     return {
+        "Logistic Regression": LogisticRegression(max_iter=1000, random_state=RANDOM_STATE),
+        "Gaussian NB": GaussianNB(),
         "Decision Tree": DecisionTreeClassifier(random_state=RANDOM_STATE),
         "Random Forest": RandomForestClassifier(n_estimators=100, max_features="sqrt", random_state=RANDOM_STATE),
         "SVM-RBF": SVC(kernel="rbf", gamma="scale", probability=True, random_state=RANDOM_STATE),
         "KNN": KNeighborsClassifier(n_neighbors=5, metric="euclidean")
     }
 
-def evaluate_model(model, X, y, n_runs=N_RUNS):
-    metrics = {'Accuracy': [], 'Precision': [], 'Recall': [], 'F1': []}
-    
+def evaluate_model_runs(model, X, y, dataset_name, model_name, n_runs=N_RUNS, add_noise=False, noise_level=0.05):
+    """
+    Run Monte Carlo Cross-Validation and return per-run metrics.
+    """
+    results = []
     sss = StratifiedShuffleSplit(n_splits=n_runs, test_size=TEST_SIZE, random_state=RANDOM_STATE)
     
+    run_id = 0
     for train_index, test_index in sss.split(X, y):
         X_train, X_test = X[train_index], X[test_index]
         y_train, y_test = y[train_index], y[test_index]
         
-        # Preprocessing: Z-score normalization (fit on train only)
+        # Preprocessing
         scaler = StandardScaler()
         X_train_scaled = scaler.fit_transform(X_train)
         X_test_scaled = scaler.transform(X_test)
         
+        if add_noise:
+            # Add noise to standardized data
+            rng = np.random.default_rng(RANDOM_STATE + run_id)
+            X_train_scaled += rng.normal(0, noise_level, X_train_scaled.shape)
+            X_test_scaled += rng.normal(0, noise_level, X_test_scaled.shape)
+            variant = "noisy"
+        else:
+            variant = "clean"
+            
         model.fit(X_train_scaled, y_train)
         y_pred = model.predict(X_test_scaled)
         
-        metrics['Accuracy'].append(accuracy_score(y_test, y_pred))
-        metrics['Precision'].append(precision_score(y_test, y_pred, average='macro', zero_division=0))
-        metrics['Recall'].append(recall_score(y_test, y_pred, average='macro', zero_division=0))
-        metrics['F1'].append(f1_score(y_test, y_pred, average='macro', zero_division=0))
+        metrics = {
+            "run": run_id,
+            "dataset": dataset_name,
+            "model": model_name,
+            "data_variant": variant,
+            "accuracy": accuracy_score(y_test, y_pred),
+            "precision": precision_score(y_test, y_pred, average='macro', zero_division=0),
+            "recall": recall_score(y_test, y_pred, average='macro', zero_division=0),
+            "f1": f1_score(y_test, y_pred, average='macro', zero_division=0)
+        }
+        results.append(metrics)
+        run_id += 1
         
-    return {k: (np.mean(v), np.std(v)) for k, v in metrics.items()}
+    return results
 
 def run_ablation(X, y):
     variants = {
@@ -80,9 +105,16 @@ def run_ablation(X, y):
     
     results = {}
     for name, model in variants.items():
-        print(f"  Running ablation: {name}...")
-        metrics = evaluate_model(model, X, y)
-        results[name] = metrics
+        # Just run one pass of evaluation (summary)
+        metrics_list = evaluate_model_runs(model, X, y, "Wine", name, n_runs=N_RUNS)
+        # Aggregate
+        df = pd.DataFrame(metrics_list)
+        results[name] = {
+            "Accuracy": (df["accuracy"].mean(), df["accuracy"].std()),
+            "Precision": (df["precision"].mean(), df["precision"].std()),
+            "Recall": (df["recall"].mean(), df["recall"].std()),
+            "F1-Score": (df["f1"].mean(), df["f1"].std())
+        }
     return results
 
 def run_noise_robustness(X, y):
@@ -92,41 +124,13 @@ def run_noise_robustness(X, y):
     model = SASKC(n_neighbors=5, use_weights=True, use_rank_voting=True)
     
     for sigma in noise_levels:
-        print(f"  Testing noise level: {sigma}...")
-        accuracies = []
-        sss = StratifiedShuffleSplit(n_splits=N_RUNS, test_size=TEST_SIZE, random_state=RANDOM_STATE)
-        
-        for train_index, test_index in sss.split(X, y):
-            X_train, X_test = X[train_index], X[test_index]
-            y_train, y_test = y[train_index], y[test_index]
-            
-            # Add noise
-            noise_train = np.random.normal(0, sigma, X_train.shape)
-            noise_test = np.random.normal(0, sigma, X_test.shape)
-            
-            # Standardize FIRST, then add noise? Or add noise then standardize?
-            # User said: "Preprocess... Apply Z-score... Line plot for noise robustness: noise levels [0, 0.05...]"
-            # Usually noise is added to raw data or standardized data. 
-            # If we add noise to raw data, standardization might mitigate it if it's just shift, but random noise won't be removed.
-            # Let's Standardize -> Add Noise (since sigma is 0.05, which implies scale relative to std=1).
-            
-            scaler = StandardScaler()
-            X_train_scaled = scaler.fit_transform(X_train)
-            X_test_scaled = scaler.transform(X_test)
-            
-            X_train_noisy = X_train_scaled + noise_train
-            X_test_noisy = X_test_scaled + noise_test
-            
-            model.fit(X_train_noisy, y_train)
-            y_pred = model.predict(X_test_noisy)
-            accuracies.append(accuracy_score(y_test, y_pred))
-            
-        results.append(np.mean(accuracies))
+        metrics_list = evaluate_model_runs(model, X, y, "Wine", "SASKC", n_runs=N_RUNS, add_noise=(sigma > 0), noise_level=sigma)
+        df = pd.DataFrame(metrics_list)
+        results.append(df["accuracy"].mean())
         
     return noise_levels, results
 
 def plot_confusion_matrix(model, X, y, dataset_name, target_names):
-    # Train on one split for visualization
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=TEST_SIZE, stratify=y, random_state=RANDOM_STATE)
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train)
@@ -147,7 +151,6 @@ def plot_confusion_matrix(model, X, y, dataset_name, target_names):
     plt.close()
 
 def plot_feature_weights(model, feature_names, dataset_name):
-    # Model is already fitted from CM step
     weights = model.feature_weights_
     
     plt.figure(figsize=(10, 6))
@@ -165,44 +168,30 @@ def main():
     baselines = get_baselines()
     saskc = SASKC(n_neighbors=5)
     
-    all_results = []
-    ablation_results_all = {}
+    all_runs_data = []
     
     print("Starting Comprehensive Evaluation...")
     
+    # 1. Main Evaluation (Clean Data)
     for name, (X, y, feat_names, target_names) in datasets.items():
         print(f"\nProcessing Dataset: {name}")
         
-        # 1. Evaluate Baselines
-        for b_name, model in baselines.items():
-            print(f"  Evaluating {b_name}...")
-            metrics = evaluate_model(model, X, y)
-            row = {'Dataset': name, 'Model': b_name}
-            for k, v in metrics.items():
-                row[k] = f"{v[0]:.3f} ± {v[1]:.3f}"
-            all_results.append(row)
+        # Baselines
+        for b_name, model in tqdm(baselines.items(), desc="Baselines"):
+            runs = evaluate_model_runs(model, X, y, name, b_name)
+            all_runs_data.extend(runs)
             
-        # 2. Evaluate SASKC
+        # SASKC
         print(f"  Evaluating SASKC...")
-        metrics = evaluate_model(saskc, X, y)
-        row = {'Dataset': name, 'Model': 'SASKC'}
-        for k, v in metrics.items():
-            row[k] = f"{v[0]:.3f} ± {v[1]:.3f}"
-        all_results.append(row)
+        runs = evaluate_model_runs(saskc, X, y, name, "SASKC")
+        all_runs_data.extend(runs)
         
-        # 3. Ablation Study
-        print(f"  Running Ablation Study...")
-        ablation_metrics = run_ablation(X, y)
-        ablation_results_all[name] = ablation_metrics
-        
-        # 4. Plots
-        print(f"  Generating Plots...")
+        # Plots
         plot_confusion_matrix(saskc, X, y, name, target_names)
-        if name == 'Wine': # Plot weights for Wine as requested (13 features)
+        if name == 'Wine':
             plot_feature_weights(saskc, feat_names, name)
             
-        # 5. Noise Robustness (Only for Wine or all? User said "Line plot for noise robustness". Let's do Wine)
-        if name == 'Wine':
+            # Noise Robustness
             print(f"  Running Noise Robustness on Wine...")
             noise_x, noise_y = run_noise_robustness(X, y)
             plt.figure(figsize=(8, 5))
@@ -211,31 +200,73 @@ def main():
             plt.ylabel('Accuracy')
             plt.title('SASKC Noise Robustness (Wine Dataset)')
             plt.grid(True)
-            os.makedirs('results/plots', exist_ok=True)
             plt.savefig('results/plots/noise_robustness.png')
             plt.close()
+            
+            # Run SASKC on Noisy Wine for Dashboard (Data Variant: Noisy)
+            print(f"  Generating Noisy Data Runs for Dashboard...")
+            noisy_runs = evaluate_model_runs(saskc, X, y, name, "SASKC", add_noise=True, noise_level=0.05)
+            all_runs_data.extend(noisy_runs)
+            # Also run baselines on noisy data for comparison?
+            # Dashboard expects variants. Let's run KNN and RF on noisy too.
+            for b_name in ["KNN", "Random Forest"]:
+                runs = evaluate_model_runs(baselines[b_name], X, y, name, b_name, add_noise=True, noise_level=0.05)
+                all_runs_data.extend(runs)
 
+    # 2. Ablation Study (Wine only)
+    print(f"\nRunning Ablation Study on Wine...")
+    wine_X, wine_y, _, _ = datasets['Wine']
+    ablation_results = run_ablation(wine_X, wine_y)
+    
     # Save Results
     os.makedirs('results/tables', exist_ok=True)
-    df_results = pd.DataFrame(all_results)
-    df_results.to_csv('results/tables/evaluation_results.csv', index=False)
     
-    # Format Ablation Table
+    # Raw Runs CSV
+    df_runs = pd.DataFrame(all_runs_data)
+    df_runs.to_csv('results/tables/results_runs.csv', index=False)
+    
+    # Summary CSV
+    summary = df_runs.groupby(['dataset', 'model', 'data_variant'])[['accuracy', 'precision', 'recall', 'f1']].agg(['mean', 'std'])
+    # Flatten columns
+    summary.columns = ['_'.join(col).strip() for col in summary.columns.values]
+    summary.reset_index().to_csv('results/tables/evaluation_results.csv', index=False)
+    
+    # Ablation CSV
     ablation_rows = []
-    for dataset, variants in ablation_results_all.items():
-        for v_name, metrics in variants.items():
-            row = {'Dataset': dataset, 'Variant': v_name}
-            for k, v in metrics.items():
-                row[k] = f"{v[0]:.3f} ± {v[1]:.3f}"
-            ablation_rows.append(row)
-    df_ablation = pd.DataFrame(ablation_rows)
-    df_ablation.to_csv('results/tables/ablation_results.csv', index=False)
+    for v_name, metrics in ablation_results.items():
+        row = {'Dataset': 'Wine', 'Variant': v_name}
+        for k, v in metrics.items():
+            row[k] = f"{v[0]:.3f} ± {v[1]:.3f}"
+        ablation_rows.append(row)
+    pd.DataFrame(ablation_rows).to_csv('results/tables/ablation_results.csv', index=False)
     
-    print("\nEvaluation Complete.")
-    print("\n--- Model Results ---")
-    print(df_results.to_string(index=False))
-    print("\n--- Ablation Results ---")
-    print(df_ablation.to_string(index=False))
+    # Save Best SASKC Model for API (Train on full Wine dataset)
+    print("\nSaving SASKC model for API...")
+    import joblib
+    os.makedirs('models', exist_ok=True)
+    wine_X, wine_y, _, _ = datasets['Wine']
+    
+    # We must use the same preprocessing as expected by the API.
+    # The API expects raw features? Or scaled?
+    # The API code does: `X_input = np.array(features).reshape(1, -1); model.predict(X_input)`
+    # It does NOT scale.
+    # So the model must be trained on RAW data, OR the model must include scaling in a pipeline.
+    # SASKC handles raw data (computes weights), but distance is Euclidean.
+    # If we train on raw data, SASKC works (weights adjust for variance).
+    # But if we trained on Scaled data in evaluation, we should probably stick to a standard pipeline.
+    # However, SASKC is designed to be robust.
+    # Let's train a Pipeline(StandardScaler, SASKC) and save that.
+    
+    from sklearn.pipeline import Pipeline
+    api_model = Pipeline([
+        ('scaler', StandardScaler()),
+        ('clf', SASKC(n_neighbors=5))
+    ])
+    api_model.fit(wine_X, wine_y)
+    joblib.dump(api_model, 'models/best_model_saskc.pkl')
+    print("Model saved to models/best_model_saskc.pkl")
+    
+    print("\nEvaluation Complete. Results saved to results/tables/")
 
 if __name__ == "__main__":
     main()
