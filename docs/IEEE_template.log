@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.30)  30 NOV 2025 23:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.12.30)  30 NOV 2025 23:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -366,19 +366,6 @@ yas/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}
 
 
 ]
-
-LaTeX Warning: Citation `bach2004multiple' on page 2 undefined on input line 87
-.
-
-
-LaTeX Warning: Citation `weinberger2009distance' on page 2 undefined on input l
-ine 91.
-
-
-LaTeX Warning: Citation `goldberger2004neighbourhood' on page 2 undefined on in
-put line 91.
-
-
 Underfull \hbox (badness 3291) in paragraph at lines 97--98
 []\OT1/ptm/m/n/10 The Su-per-vised Adap-tive Sta-tis-ti-cal Ker-nel Clas-si-fie
 r
@@ -396,63 +383,57 @@ File: diagram/saskc_voting.png Graphic file (type png)
 Package pdftex.def Info: diagram/saskc_voting.png  used on input line 153.
 (pdftex.def)             Requested size: 226.79846pt x 226.80678pt.
  [3 <./diagram/saskc_variance.png> <./diagram/saskc_voting.png>]
-
-LaTeX Warning: Reference `sec:algorithm' on page 4 undefined on input line 221.
-
-
 <diagram/saskc_architecture.png, id=26, 246.6816pt x 246.6816pt>
 File: diagram/saskc_architecture.png Graphic file (type png)
 <use diagram/saskc_architecture.png>
 Package pdftex.def Info: diagram/saskc_architecture.png  used on input line 227
 .
 (pdftex.def)             Requested size: 226.79846pt x 226.80678pt.
-[4]
+ [4]
 <diagram/dataset_pca.png, id=33, 722.7pt x 578.16pt>
 File: diagram/dataset_pca.png Graphic file (type png)
 <use diagram/dataset_pca.png>
 Package pdftex.def Info: diagram/dataset_pca.png  used on input line 252.
 (pdftex.def)             Requested size: 226.79846pt x 181.43324pt.
 
-Underfull \hbox (badness 1460) in paragraph at lines 308--309
+Underfull \hbox (badness 1460) in paragraph at lines 323--324
  \OT1/ptm/m/it/10 1) Com-par-i-son with Instance-Based Meth-ods: [][] \OT1/ptm/
 m/n/10 SASKC
  []
 
 [5 <./diagram/saskc_architecture.png> <./diagram/dataset_pca.png>]
-
-LaTeX Warning: Reference `tab:ablation' on page 6 undefined on input line 314.
-
-
-LaTeX Warning: Reference `fig:cm' on page 6 undefined on input line 336.
-
 <../results/plots/confusion_matrix_Wine.png, id=39, 433.62pt x 433.62pt>
 File: ../results/plots/confusion_matrix_Wine.png Graphic file (type png)
 <use ../results/plots/confusion_matrix_Wine.png>
 Package pdftex.def Info: ../results/plots/confusion_matrix_Wine.png  used on in
-put line 339.
+put line 367.
 (pdftex.def)             Requested size: 226.79846pt x 226.80038pt.
 
-LaTeX Warning: Reference `fig:weights' on page 6 undefined on input line 345.
+Underfull \hbox (badness 1565) in paragraph at lines 373--374
+ \OT1/ptm/m/it/10 2) Adap-tive Fea-ture Weights: [][] \OT1/ptm/m/n/10 Fig-ure 6
+[] vi-su-al-izes the
+ []
 
 <../results/plots/feature_weights_Wine.png, id=40, 722.7pt x 433.62pt>
 File: ../results/plots/feature_weights_Wine.png Graphic file (type png)
 <use ../results/plots/feature_weights_Wine.png>
 Package pdftex.def Info: ../results/plots/feature_weights_Wine.png  used on inp
-ut line 348.
+ut line 376.
 (pdftex.def)             Requested size: 226.79846pt x 136.07494pt.
-[6 <../results/plots/confusion_matrix_Wine.png> <../results/plots/feature_weigh
-ts_Wine.png>]
-<diagram/noise_robustness.png, id=49, 867.24pt x 433.62pt>
+[6 <../results/plots/confusion_matrix_Wine.png>]
+<diagram/noise_robustness.png, id=48, 867.24pt x 433.62pt>
 File: diagram/noise_robustness.png Graphic file (type png)
 <use diagram/noise_robustness.png>
-Package pdftex.def Info: diagram/noise_robustness.png  used on input line 359.
+Package pdftex.def Info: diagram/noise_robustness.png  used on input line 387.
 (pdftex.def)             Requested size: 226.79846pt x 113.39357pt.
 
-Underfull \hbox (badness 1867) in paragraph at lines 371--372
+Underfull \hbox (badness 1867) in paragraph at lines 399--400
 []\OT1/ptm/b/n/10 Competitive Ac-cu-racy\OT1/ptm/m/n/10 : 96.1% on the UCI Wine
 
  []
 
+[7 <../results/plots/feature_weights_Wine.png> <./diagram/noise_robustness.png>
+]
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -464,27 +445,26 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[7 <./diagram/noise_robustness.png>] (IEEE_template.aux)
+[8
+
+] (IEEE_template.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
 
 
-LaTeX Warning: There were undefined references.
-
-
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
  ) 
 Here is how much of TeX's memory you used:
- 4689 strings out of 474486
- 75912 string characters out of 5743754
- 1949542 words of memory out of 5000000
- 26915 multiletter control sequences out of 15000+600000
+ 4688 strings out of 474486
+ 75899 string characters out of 5743754
+ 1952542 words of memory out of 5000000
+ 26914 multiletter control sequences out of 15000+600000
  599932 words of font info for 116 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,9n,65p,835b,410s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 57i,11n,65p,835b,410s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/suyas/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
 cmex10.pfb><C:/Users/suyas/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
 fonts/cm/cmmi10.pfb><C:/Users/suyas/AppData/Local/Programs/MiKTeX/fonts/type1/p
@@ -506,9 +486,9 @@ rograms/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/suyas/AppData/Local/P
 rograms/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/suyas/AppData/Local/
 Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/suyas/AppData/Local/
 Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on IEEE_template.pdf (7 pages, 1942462 bytes).
+Output written on IEEE_template.pdf (8 pages, 1944224 bytes).
 PDF statistics:
- 134 PDF objects out of 1000 (max. 8388607)
+ 137 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  36 words of extra memory for PDF output out of 10000 (max. 10000000)
 

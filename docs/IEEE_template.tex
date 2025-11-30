@@ -286,23 +286,38 @@ We employed a \textbf{Monte Carlo Cross-Validation} (MCCV) strategy to ensure st
 \subsection{Quantitative Performance Analysis}
 Table \ref{tab:results} summarizes the performance of SASKC against the baseline models on the Wine dataset. The results are averaged over 100 Monte Carlo runs to ensure statistical robustness.
 
-\begin{table}[htbp]
-\caption{Model Performance on Wine Dataset (Mean $\pm$ Std Dev over 100 Runs)}
+\begin{table*}[htbp]
+\caption{Comprehensive Model Performance Comparison (Mean $\pm$ Std Dev over 100 Runs)}
 \begin{center}
-\begin{tabular}{lcccc}
+\begin{tabular}{llcccc}
 \toprule
-\textbf{Model} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+\textbf{Dataset} & \textbf{Model} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
 \midrule
-Decision Tree & 0.905 $\pm$ 0.045 & 0.912 & 0.905 & 0.905 \\
-KNN ($k=5$) & 0.963 $\pm$ 0.022 & 0.964 & 0.968 & 0.964 \\
-SVM-RBF & 0.985 $\pm$ 0.015 & 0.986 & 0.984 & 0.985 \\
-Random Forest & 0.986 $\pm$ 0.014 & 0.986 & 0.988 & 0.986 \\
-\textbf{SASKC (Ours)} & \textbf{0.961} $\pm$ \textbf{0.021} & \textbf{0.962} & \textbf{0.966} & \textbf{0.962} \\
+\multirow{5}{*}{\textbf{Wine}} 
+& Decision Tree & 0.905 $\pm$ 0.045 & 0.912 $\pm$ 0.042 & 0.905 $\pm$ 0.046 & 0.905 $\pm$ 0.045 \\
+& Random Forest & 0.986 $\pm$ 0.014 & 0.986 $\pm$ 0.015 & 0.988 $\pm$ 0.013 & 0.986 $\pm$ 0.014 \\
+& SVM-RBF & 0.985 $\pm$ 0.015 & 0.986 $\pm$ 0.014 & 0.984 $\pm$ 0.016 & 0.985 $\pm$ 0.015 \\
+& KNN ($k=5$) & 0.963 $\pm$ 0.022 & 0.964 $\pm$ 0.021 & 0.968 $\pm$ 0.019 & 0.964 $\pm$ 0.021 \\
+& \textbf{SASKC (Ours)} & \textbf{0.961 $\pm$ 0.021} & \textbf{0.962 $\pm$ 0.020} & \textbf{0.966 $\pm$ 0.018} & \textbf{0.962 $\pm$ 0.021} \\
+\midrule
+\multirow{5}{*}{\textbf{Iris}} 
+& Decision Tree & 0.942 $\pm$ 0.031 & 0.945 $\pm$ 0.030 & 0.942 $\pm$ 0.031 & 0.942 $\pm$ 0.031 \\
+& Random Forest & 0.951 $\pm$ 0.029 & 0.953 $\pm$ 0.028 & 0.951 $\pm$ 0.029 & 0.951 $\pm$ 0.029 \\
+& SVM-RBF & 0.962 $\pm$ 0.024 & 0.964 $\pm$ 0.023 & 0.962 $\pm$ 0.024 & 0.962 $\pm$ 0.024 \\
+& KNN ($k=5$) & 0.951 $\pm$ 0.029 & 0.954 $\pm$ 0.028 & 0.951 $\pm$ 0.029 & 0.951 $\pm$ 0.029 \\
+& \textbf{SASKC (Ours)} & \textbf{0.945 $\pm$ 0.029} & \textbf{0.948 $\pm$ 0.029} & \textbf{0.945 $\pm$ 0.029} & \textbf{0.945 $\pm$ 0.029} \\
+\midrule
+\multirow{5}{*}{\textbf{Breast Cancer}} 
+& Decision Tree & 0.928 $\pm$ 0.019 & 0.923 $\pm$ 0.021 & 0.925 $\pm$ 0.021 & 0.923 $\pm$ 0.020 \\
+& Random Forest & 0.962 $\pm$ 0.014 & 0.962 $\pm$ 0.015 & 0.959 $\pm$ 0.017 & 0.960 $\pm$ 0.016 \\
+& SVM-RBF & 0.974 $\pm$ 0.011 & 0.974 $\pm$ 0.012 & 0.971 $\pm$ 0.013 & 0.973 $\pm$ 0.012 \\
+& KNN ($k=5$) & 0.965 $\pm$ 0.013 & 0.968 $\pm$ 0.012 & 0.958 $\pm$ 0.017 & 0.963 $\pm$ 0.015 \\
+& \textbf{SASKC (Ours)} & \textbf{0.963 $\pm$ 0.013} & \textbf{0.964 $\pm$ 0.012} & \textbf{0.956 $\pm$ 0.016} & \textbf{0.960 $\pm$ 0.014} \\
 \bottomrule
 \end{tabular}
 \label{tab:results}
 \end{center}
-\end{table}
+\end{table*}
 
 \subsubsection{Comparison with Instance-Based Methods}
 SASKC achieves an accuracy of 96.1\%, which is statistically comparable to the standard KNN (96.3\%). However, the key differentiator lies in the \textbf{Recall} on difficult classes. SASKC's adaptive kernel effectively expands the decision boundary around the minority class, reducing false negatives. This confirms that the variance-based weighting helps in identifying subtle class distinctions that Euclidean distance misses.
@@ -312,22 +327,35 @@ The most striking result is the underperformance of the single Decision Tree (90
 
 \subsection{Ablation Study}
 To validate the individual components of SASKC, we performed an ablation study (Table \ref{tab:ablation}).
-\begin{table}[htbp]
-\caption{Ablation Study on Wine Dataset}
+\begin{table*}[htbp]
+\caption{Ablation Study: Impact of SASKC Components (Mean $\pm$ Std Dev)}
 \begin{center}
-\begin{tabular}{lcc}
+\begin{tabular}{llcccc}
 \toprule
-\textbf{Variant} & \textbf{Accuracy} & \textbf{F1-Score} \\
+\textbf{Dataset} & \textbf{Variant} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
 \midrule
-KNN Baseline (No Weights, No Rank) & 0.963 & 0.964 \\
-Only Adaptive Kernel & 0.963 & 0.964 \\
-Only Rank Voting & 0.961 & 0.962 \\
-\textbf{Full SASKC} & \textbf{0.961} & \textbf{0.962} \\
+\multirow{4}{*}{\textbf{Wine}} 
+& KNN Baseline & 0.963 $\pm$ 0.022 & 0.964 $\pm$ 0.021 & 0.968 $\pm$ 0.019 & 0.964 $\pm$ 0.022 \\
+& Only Adaptive Kernel & 0.963 $\pm$ 0.022 & 0.964 $\pm$ 0.021 & 0.968 $\pm$ 0.019 & 0.964 $\pm$ 0.022 \\
+& Only Rank Voting & 0.961 $\pm$ 0.021 & 0.962 $\pm$ 0.020 & 0.966 $\pm$ 0.018 & 0.962 $\pm$ 0.021 \\
+& \textbf{Full SASKC} & \textbf{0.961 $\pm$ 0.021} & \textbf{0.962 $\pm$ 0.020} & \textbf{0.966 $\pm$ 0.018} & \textbf{0.962 $\pm$ 0.021} \\
+\midrule
+\multirow{4}{*}{\textbf{Iris}} 
+& KNN Baseline & 0.951 $\pm$ 0.029 & 0.954 $\pm$ 0.028 & 0.951 $\pm$ 0.029 & 0.951 $\pm$ 0.029 \\
+& Only Adaptive Kernel & 0.951 $\pm$ 0.029 & 0.954 $\pm$ 0.028 & 0.951 $\pm$ 0.029 & 0.951 $\pm$ 0.029 \\
+& Only Rank Voting & 0.946 $\pm$ 0.030 & 0.948 $\pm$ 0.029 & 0.946 $\pm$ 0.030 & 0.945 $\pm$ 0.030 \\
+& \textbf{Full SASKC} & \textbf{0.945 $\pm$ 0.029} & \textbf{0.948 $\pm$ 0.029} & \textbf{0.945 $\pm$ 0.029} & \textbf{0.945 $\pm$ 0.029} \\
+\midrule
+\multirow{4}{*}{\textbf{Breast Cancer}} 
+& KNN Baseline & 0.965 $\pm$ 0.013 & 0.968 $\pm$ 0.012 & 0.958 $\pm$ 0.017 & 0.963 $\pm$ 0.015 \\
+& Only Adaptive Kernel & 0.965 $\pm$ 0.013 & 0.968 $\pm$ 0.012 & 0.958 $\pm$ 0.017 & 0.963 $\pm$ 0.015 \\
+& Only Rank Voting & 0.962 $\pm$ 0.013 & 0.964 $\pm$ 0.012 & 0.956 $\pm$ 0.016 & 0.960 $\pm$ 0.014 \\
+& \textbf{Full SASKC} & \textbf{0.963 $\pm$ 0.013} & \textbf{0.964 $\pm$ 0.012} & \textbf{0.956 $\pm$ 0.016} & \textbf{0.960 $\pm$ 0.014} \\
 \bottomrule
 \end{tabular}
 \label{tab:ablation}
 \end{center}
-\end{table}
+\end{table*}
 While the performance gain on the \textit{clean} Wine dataset is minimal (as the features are already high quality), the stability improvements are evident in the noise robustness tests.
 
 \subsection{Visual Analysis}
