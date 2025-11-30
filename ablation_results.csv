@@ -1,0 +1,13 @@
+Dataset,Variant,Accuracy,Precision,Recall,F1
+Wine,KNN Baseline,0.963 ± 0.022,0.964 ± 0.021,0.968 ± 0.019,0.964 ± 0.022
+Wine,Only Adaptive Kernel,0.963 ± 0.022,0.964 ± 0.021,0.968 ± 0.019,0.964 ± 0.022
+Wine,Only Rank Voting,0.961 ± 0.021,0.962 ± 0.020,0.966 ± 0.018,0.962 ± 0.021
+Wine,Full SASKC,0.961 ± 0.021,0.962 ± 0.020,0.966 ± 0.018,0.962 ± 0.021
+Iris,KNN Baseline,0.951 ± 0.029,0.954 ± 0.028,0.951 ± 0.029,0.951 ± 0.029
+Iris,Only Adaptive Kernel,0.951 ± 0.029,0.954 ± 0.028,0.951 ± 0.029,0.951 ± 0.029
+Iris,Only Rank Voting,0.946 ± 0.030,0.948 ± 0.029,0.946 ± 0.030,0.945 ± 0.030
+Iris,Full SASKC,0.945 ± 0.029,0.948 ± 0.029,0.945 ± 0.029,0.945 ± 0.029
+Breast Cancer,KNN Baseline,0.965 ± 0.013,0.968 ± 0.012,0.958 ± 0.017,0.963 ± 0.015
+Breast Cancer,Only Adaptive Kernel,0.965 ± 0.013,0.968 ± 0.012,0.958 ± 0.017,0.963 ± 0.015
+Breast Cancer,Only Rank Voting,0.962 ± 0.013,0.964 ± 0.012,0.956 ± 0.016,0.960 ± 0.014
+Breast Cancer,Full SASKC,0.963 ± 0.013,0.964 ± 0.012,0.956 ± 0.016,0.960 ± 0.014

@@ -28,8 +28,10 @@ class SASKC(BaseEstimator, ClassifierMixin):
         Weights assigned to each feature based on variance.
     """
     
-    def __init__(self, n_neighbors: int = 5):
+    def __init__(self, n_neighbors: int = 5, use_weights: bool = True, use_rank_voting: bool = True):
         self.n_neighbors = n_neighbors
+        self.use_weights = use_weights
+        self.use_rank_voting = use_rank_voting
         
     def fit(self, X: np.ndarray, y: np.ndarray) -> 'SASKC':
         """
@@ -58,14 +60,12 @@ class SASKC(BaseEstimator, ClassifierMixin):
         self.y_ = y
         
         # Step 1: Compute feature-wise statistics
-        # variance per feature: σ_f² = Var(X[:, f])
-        # define feature weight: w_f = 1 / (1 + σ_f²)
-        # We use ddof=0 for population variance or ddof=1 for sample variance. 
-        # Spec doesn't specify, but usually sample variance (ddof=1) is safer. 
-        # However, numpy var default is ddof=0. Let's use ddof=0 (population) as it's standard in ML unless specified.
-        # Actually, let's use ddof=0 to match standard "Var(X)" notation.
-        variances = np.var(X, axis=0)
-        self.feature_weights_ = 1.0 / (1.0 + variances)
+        if self.use_weights:
+            variances = np.var(X, axis=0)
+            # wf = 1/(1 + σ²f + 1e-6) as requested
+            self.feature_weights_ = 1.0 / (1.0 + variances + 1e-6)
+        else:
+            self.feature_weights_ = np.ones(X.shape[1])
         
         return self
         
@@ -112,18 +112,6 @@ class SASKC(BaseEstimator, ClassifierMixin):
         
         # Step 2: Weighted distance
         # Dᵢⱼ = sqrt( Σ_f [ w_f * (xᵢ,f - xⱼ,f)² ] )
-        # We can compute this efficiently using broadcasting or cdist with custom metric.
-        # But for clarity and to match spec exactly, let's do it explicitly or semi-vectorized.
-        # Since dataset is small (Wine ~178 samples), we can do it per test sample or fully vectorized.
-        # Let's do fully vectorized for efficiency if possible, but memory might be an issue if X is huge.
-        # Wine is tiny, so fully vectorized is fine.
-        
-        # Expand dims for broadcasting:
-        # X: (n_test, 1, n_features)
-        # self.X_: (1, n_train, n_features)
-        # weights: (1, 1, n_features)
-        
-        # However, for very large X_test, this might OOM. Let's loop over X_test samples for safety and clarity.
         
         for i in range(n_samples):
             # Difference: (n_train, n_features)
@@ -144,7 +132,6 @@ class SASKC(BaseEstimator, ClassifierMixin):
             k = min(self.n_neighbors, len(self.X_))
             
             # Get indices of k nearest neighbors
-            # argpartition is faster than sort for top k
             if k < len(self.X_):
                 nearest_indices = np.argpartition(distances, k)[:k]
             else:
@@ -163,9 +150,11 @@ class SASKC(BaseEstimator, ClassifierMixin):
             similarities = 1.0 / (1.0 + final_dists)
             
             # rank weight: Rⱼ = 1 / rankⱼ (1, 1/2, 1/3, ...)
-            # ranks are 1-based: 1, 2, ..., k
-            ranks = np.arange(1, k + 1)
-            rank_weights = 1.0 / ranks
+            if self.use_rank_voting:
+                ranks = np.arange(1, k + 1)
+                rank_weights = 1.0 / ranks
+            else:
+                rank_weights = np.ones(k)
             
             # Step 5: Class support score
             # C_c = Σ_j ( Sⱼ * Rⱼ * 1[yⱼ == c] )
@@ -176,7 +165,6 @@ class SASKC(BaseEstimator, ClassifierMixin):
             for idx, label in enumerate(final_labels):
                 # Find index of label in self.classes_
                 class_idx = np.searchsorted(self.classes_, label)
-                # Note: searchsorted works if classes_ is sorted. unique_labels returns sorted.
                 probabilities[i, class_idx] += contributions[idx]
                 
         # Step 6: Prediction + probabilities
