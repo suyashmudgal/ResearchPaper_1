@@ -6,14 +6,15 @@ A complete, production-quality, research-grade machine learning project implemen
 
 ## 📌 Project Overview
 
-This project introduces **SASKC**, a new non-parametric classification algorithm that improves upon K-Nearest Neighbors (KNN) by incorporating feature-wise statistical weighting and a rank-based voting mechanism. The project is structured as a rigorous research study, comparing SASKC against standard ML models (Logistic Regression, SVM, KNN, Naive Bayes, Decision Tree, Random Forest) on the **Wine dataset**.
+This project introduces **SASKC**, a new non-parametric classification algorithm that improves upon K-Nearest Neighbors (KNN) by incorporating feature-wise statistical weighting and a rank-based voting mechanism. The project is structured as a rigorous research study, comparing SASKC against standard ML models (Logistic Regression, SVM, KNN, Naive Bayes, Decision Tree, Random Forest) on three benchmark datasets: **Wine, Iris, and Breast Cancer**.
 
-Key Features:
+**Key Features:**
 - **Novel Algorithm**: Full implementation of SASKC from scratch.
-- **Rigorous Evaluation**: 100 Monte Carlo cross-validation runs.
+- **Rigorous Evaluation**: 100 Monte Carlo cross-validation runs on multiple datasets.
+- **Ablation Study**: Analysis of the impact of adaptive weights vs. rank-based voting.
 - **Robustness Testing**: Evaluation on both clean and noisy data (Gaussian noise).
-- **Production Ready**: Includes a REST API (Flask) and an interactive Dashboard (Streamlit).
-- **Research Grade**: IEEE-format paper draft and experiment logs.
+- **Interactive Dashboard**: Streamlit app for visualizing results and stability.
+- **Research Paper**: Full 11-page IEEE-format conference paper included.
 
 ## 🧠 What is SASKC?
 
@@ -42,82 +43,61 @@ Key Features:
 6.  **Prediction**:
     $$\hat{y} = \arg\max_c C_c$$
 
-## 📊 Dataset
+## 📂 Project Structure
 
-We use the **Wine dataset** from scikit-learn:
-- **Samples**: 178
-- **Features**: 13 numeric (Alcohol, Malic acid, Ash, etc.)
-- **Classes**: 3 (Cultivars)
-
-## 🧪 Experiments
-
-We perform **100 training cycles** (Monte Carlo Cross-Validation) with:
-- **Test Size**: 30%
-- **Stratified Split**
-- **Models**: LR, SVC, KNN, GNB, DT, RF, SASKC.
-- **Metrics**: Accuracy, Precision, Recall, F1.
-- **Noise Injection**: Experiments are repeated with 5% Gaussian noise added to features to test robustness.
+```
+SASKC_Research_Project/
+├── data/
+│   └── raw/                # Raw datasets (e.g., wine.data)
+├── results/
+│   ├── plots/              # Generated plots (Confusion Matrices, Noise Robustness)
+│   └── tables/             # CSV results (Evaluation, Ablation, Runs)
+├── src/
+│   ├── saskc.py            # Core algorithm implementation
+│   ├── comprehensive_evaluation.py # Main evaluation script
+│   ├── experiment_runs.py  # Dashboard data generator
+│   └── api/                # Flask API
+├── dashboard/              # Streamlit app
+├── docs/                   # Research paper (LaTeX source & PDF)
+└── requirements.txt        # Dependencies
+```
 
 ## 🚀 How to Run
 
-### 1. Setup & Experiments
-Run the automated setup script to install dependencies, run experiments, and train the final model:
-
-**Windows (PowerShell):**
-```powershell
-./run.ps1
-```
-
-**Linux/Mac (Bash):**
+### 1. Setup
+Install the required dependencies:
 ```bash
-./run.sh
-```
-
-Or run manually:
-```bash
-# 1. Install dependencies
 pip install -r requirements.txt
-
-# 2. Run experiments (Generates data/results_runs.csv)
-python src/experiment_runs.py
-
-# 3. Train final model (Generates models/best_model_saskc.pkl)
-python src/train_best_model.py
 ```
 
-### 2. Interactive Dashboard
+### 2. Run Comprehensive Evaluation
+Execute the main evaluation script to generate all results, tables, and plots:
+```bash
+python -m src.comprehensive_evaluation
+```
+This will:
+- Evaluate all models on Wine, Iris, and Breast Cancer datasets.
+- Run the ablation study.
+- Generate plots in `results/plots/`.
+- Save CSV tables in `results/tables/`.
+
+### 3. Interactive Dashboard
 Visualize the experiment results, stability plots, and comparisons:
 ```bash
 streamlit run dashboard/streamlit_app.py
 ```
+*Note: The dashboard will automatically generate the necessary data if it's missing.*
 
-### 3. REST API
+### 4. REST API
 Serve the trained model via Flask:
 ```bash
 python src/api/flask_api.py
 ```
 
-**Test with cURL:**
-```bash
-curl -X POST http://localhost:5000/predict \
-     -H "Content-Type: application/json" \
-     -d '{"features": [13.2, 1.78, 2.14, 11.2, 100, 2.65, 2.76, 0.26, 1.28, 4.38, 1.05, 3.4, 1050]}'
-```
-
-## 📂 Project Structure
-
-```
-SASKC_Research_Project/
-├── data/               # Experiment results (CSVs)
-├── models/             # Trained .pkl models
-├── src/
-│   ├── saskc.py        # Core algorithm implementation
-│   ├── experiment_runs.py # Experiment runner
-│   └── api/            # Flask API
-├── dashboard/          # Streamlit app
-├── docs/               # Research paper & presentation
-└── requirements.txt    # Dependencies
-```
+## 📄 Research Paper
+The full 11-page IEEE conference paper is available in the `docs/` directory:
+- **PDF**: `docs/IEEE_template.pdf`
+- **LaTeX Source**: `docs/IEEE_template.tex`
 
 ## 📜 License
 MIT License.
