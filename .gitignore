@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.DS_Store
+.env
+venv/
+env/
+.idea/
+.vscode/
+data/*.csv
+models/*.pkl
+dashboard/plots/*.png
