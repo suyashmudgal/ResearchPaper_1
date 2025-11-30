@@ -10,6 +10,7 @@
 \usepackage{url}
 \usepackage{multirow}
 \usepackage{float}
+\usepackage{subcaption}
 
 % Set graphics path to include both local diagram folder and results folder
 \graphicspath{{diagram/}{../results/plots/}}
@@ -49,6 +50,9 @@ adaptive kernel, statistical learning, small-sample classification, curse of dim
 The modern era of artificial intelligence is defined by ``Big Data.'' Deep learning architectures, such as Convolutional Neural Networks (CNNs) and Transformers, have achieved superhuman performance by leveraging massive datasets containing millions of examples \cite{bishop2006pattern}. However, this paradigm is inapplicable to a vast array of critical domains where data is inherently scarce. In medical diagnostics, for instance, collecting samples for a rare disease is both expensive and time-consuming. Similarly, in manufacturing, obtaining fault data for a new production line is difficult because failures are rare events.
 
 In these ``small-sample'' regimes, the ratio of features ($F$) to samples ($N$) is often high, leading to the well-known ``curse of dimensionality'' \cite{hastie2009elements}. As the dimensionality $F$ increases, the volume of the feature space expands exponentially, causing the data to become sparse. For distance-based classifiers like KNN, this sparsity implies that the distance to the nearest neighbor approaches the distance to the farthest neighbor, destroying the discriminative power of the metric \cite{cover1967nearest}. Furthermore, small datasets are highly susceptible to noise; a single outlier can significantly shift the decision boundary of a classifier, leading to poor generalization.
+
+\subsection{The Geometry of Small Samples}
+From a geometric perspective, small-sample datasets often lie on low-dimensional manifolds embedded within the high-dimensional ambient space \cite{tenenbaum2000global}. Standard Euclidean metrics fail to respect this intrinsic geometry, treating all directions as equally important. When the number of samples is insufficient to densely populate the manifold, learning the manifold structure becomes a formidable challenge. Manifold learning techniques like ISOMAP or LLE \cite{roweis2000nonlinear} attempt to unfold these structures but require a critical density of points to estimate local neighborhoods reliably. In the absence of such density, we must rely on global statistical properties to infer the relevance of each dimension.
 
 \subsection{Limitations of Existing Approaches}
 Standard approaches to small-sample classification fall into two broad categories:
@@ -91,6 +95,9 @@ SASKC can be interpreted as an instance-based classifier using a specific form o
 Metric learning algorithms, such as Large Margin Nearest Neighbor (LMNN) \cite{weinberger2009distance} or Neighborhood Components Analysis (NCA) \cite{goldberger2004neighbourhood}, aim to learn a transformation matrix $L$ such that the distance $d(x, y) = ||Lx - Ly||$ is optimized for classification. These methods are powerful but prone to overfitting when $N$ is small.
 Feature weighting methods (a subset of metric learning where $L$ is diagonal) are more constrained and thus more robust. Filter methods (e.g., Information Gain, Chi-Square) select features based on statistical tests. SASKC employs a ``soft'' filter approach: instead of selecting or discarding features binary-style, it assigns continuous weights $w_f \in (0, 1]$. This preserves information from weak features while suppressing noise, a strategy known as ``shrinkage'' in statistics \cite{hastie2009elements}.
 
+\subsection{Few-Shot Learning Context}
+In the broader context of few-shot learning, meta-learning approaches like Prototypical Networks \cite{snell2017prototypical} learn a metric space where classification can be performed by computing distances to prototype representations of each class. SASKC shares this philosophy but operates in a strictly supervised setting without the need for episodic training. It constructs "prototypes" implicitly via the weighted neighborhood voting, making it a lightweight alternative for scenarios where meta-training data is unavailable.
+
 \section{Methodology: Theoretical Foundation}
 \label{sec:methodology}
 
@@ -121,6 +128,9 @@ Here, $\epsilon$ is a small smoothing constant ($10^{-6}$) to prevent numerical 
 \label{fig:variance}
 \end{figure}
 
+\subsection{Riemannian Metric Interpretation}
+Geometrically, the weights $w_f$ define a Riemannian metric tensor $G(x)$. Since our weights are global (constant for all $x$), the manifold is flat but anisotropically scaled. The squared infinitesimal distance is given by $ds^2 = \sum_f w_f dx_f^2$. This transformation effectively shrinks the axes corresponding to noisy features, pulling data points closer together along those dimensions. This clustering effect enhances the density of the data in the relevant subspace, directly combating the sparsity caused by the curse of dimensionality.
+
 \section{Proposed Algorithm: SASKC}
 \label{sec:algorithm}
 
@@ -139,7 +149,7 @@ K(x_i, x_j) = \frac{1}{1 + \sqrt{d_W^2(x_i, x_j)}}
     \item \textbf{Boundedness}: $0 < K(x_i, x_j) \le 1$. The maximum similarity is 1 when $x_i = x_j$.
     \item \textbf{Monotonicity}: $K$ is strictly decreasing with respect to $d_W$.
 \end{enumerate}
-This kernel effectively maps the input space into a similarity space where ``reliable'' proximity is amplified.
+This kernel effectively maps the input space into a similarity space where ``reliable'' proximity is amplified. Unlike the Gaussian kernel which decays exponentially, our kernel decays polynomially ($1/d$), providing a heavier tail. This is advantageous in high dimensions where distances tend to concentrate, as it preserves gradient information for points that are moderately far apart.
 
 \subsection{Rank-Based Voting Mechanism}
 Standard KNN uses majority voting, which is susceptible to ``hubs'' (points that appear in many neighborhoods) and outliers. SASKC employs a dual-weighted voting scheme that considers both the \textit{magnitude} of similarity and the \textit{rank order} of neighbors.
@@ -378,6 +388,19 @@ Figure \ref{fig:weights} visualizes the learned weights for the 13 features. We 
 \label{fig:weights}
 \end{figure}
 
+\subsection{Stability Analysis}
+Stability---the consistency of predictions across different training splits---is crucial for deployment. Figure \ref{fig:stability} presents the boxplot of F1-scores.
+\begin{itemize}
+    \item \textbf{High Variance in DT}: The Decision Tree shows a wide interquartile range (IQR), indicating that its performance is highly sensitive to the specific training subset.
+    \item \textbf{Robustness of SASKC}: SASKC exhibits a tight IQR, comparable to Random Forest and SVC. This stability is a direct consequence of the \textit{global} nature of the statistical kernel. Since variances $\sigma_f^2$ are computed over the entire training set, they provide a stable regularization term that is less affected by the removal of a few samples than the local decision boundaries of a DT.
+\end{itemize}
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=0.9\columnwidth]{stability_f1_boxplot.png}}
+\caption{F1-Score Stability Analysis. SASKC shows consistent performance across 100 random splits, highlighting its reliability. Note the large variance in Decision Tree performance, which SASKC successfully avoids.}
+\label{fig:stability}
+\end{figure}
+
 \subsection{Noise Robustness and Kernel Behavior}
 To validate the ``Adaptive'' claim of SASKC, we analyze its performance under noise injection.
 As shown in Fig. \ref{fig:noise}, standard KNN performance drops significantly as noise increases because the Euclidean distance accumulates error from all dimensions equally.
@@ -513,6 +536,31 @@ J.~B. Tenenbaum, V.~De~Silva, and J.~C. Langford, ``A global geometric framework
 \bibitem{roweis2000nonlinear}
 \BIBentryALTinterwordspacing
 S.~T. Roweis and L.~K. Saul, ``Nonlinear dimensionality reduction by locally linear embedding,'' \emph{science}, vol.~290, no.~5500, pp. 2323--2326, 2000. [Online]. Available: \url{https://www.science.org/doi/10.1126/science.290.5500.2323}
+\BIBentrySTDinterwordspacing
+
+\bibitem{snell2017prototypical}
+\BIBentryALTinterwordspacing
+J.~Snell, K.~Swersky, and R.~Zemel, ``Prototypical networks for few-shot learning,'' \emph{Advances in neural information processing systems}, vol.~30, 2017. [Online]. Available: \url{https://proceedings.neurips.cc/paper/2017/file/cb8da6767461f2812ae4290eac7cbc42-Paper.pdf}
+\BIBentrySTDinterwordspacing
+
+\bibitem{friedman1997bias}
+\BIBentryALTinterwordspacing
+J.~H. Friedman, ``On bias, variance, 0/1-loss, and the curse-of-dimensionality,'' \emph{Data mining and knowledge discovery}, vol.~1, no.~1, pp. 55--77, 1997. [Online]. Available: \url{https://link.springer.com/article/10.1023/A:1009763908088}
+\BIBentrySTDinterwordspacing
+
+\bibitem{domingos2012few}
+\BIBentryALTinterwordspacing
+P.~Domingos, ``A few useful things to know about machine learning,'' \emph{Communications of the ACM}, vol.~55, no.~10, pp. 78--87, 2012. [Online]. Available: \url{https://dl.acm.org/doi/10.1145/2347736.2347755}
+\BIBentrySTDinterwordspacing
+
+\bibitem{stone1974cross}
+\BIBentryALTinterwordspacing
+M.~Stone, ``Cross-validatory choice and assessment of statistical predictions,'' \emph{Journal of the Royal Statistical Society: Series B (Methodological)}, vol.~36, no.~2, pp. 111--133, 1974. [Online]. Available: \url{https://rss.onlinelibrary.wiley.com/doi/abs/10.1111/j.2517-6161.1974.tb00994.x}
+\BIBentrySTDinterwordspacing
+
+\bibitem{kohavi1995study}
+\BIBentryALTinterwordspacing
+R.~Kohavi \emph{et~al.}, ``A study of cross-validation and bootstrap for accuracy estimation and model selection,'' in \emph{Ijcai}, vol.~14, no.~2.\hskip 1em plus 0.5em minus 0.4em\relax Montreal, Canada, 1995, pp. 1137--1143. [Online]. Available: \url{https://www.ijcai.org/Proceedings/95-2/Papers/016.pdf}
 \BIBentrySTDinterwordspacing
 
 \end{thebibliography}
